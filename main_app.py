@@ -17,6 +17,7 @@ class MainApp(tk.Tk):
 
     def create_widgets(self):
         self.database = Database()
+        self.database.populate_fake_data()
         # Создание вкладок
         self.tabs = ttk.Notebook(self)
         self.tab_employees = EmployeesTab(self.tabs)

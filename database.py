@@ -1,4 +1,5 @@
 import sqlite3
+from faker import Faker
 
 
 class Database:
@@ -31,6 +32,21 @@ class Database:
             self.cursor.execute(query, params)
         else:
             self.cursor.execute(query)
+        self.conn.commit()
+
+    def populate_fake_data(self, num_entries=10):
+        fake = Faker()
+        for _ in range(num_entries):
+            name = fake.name()
+            position = fake.job()
+            self.cursor.execute("INSERT INTO employees (name, position) VALUES (?, ?)", (name, position))
+
+        for _ in range(num_entries):
+            budget = fake.random_int(1000, 10000)
+            income = fake.random_int(500, 5000)
+            expense = fake.random_int(100, 2000)
+            self.cursor.execute("INSERT INTO finances (budget, income, expense) VALUES (?, ?, ?)", (budget, income, expense))
+
         self.conn.commit()
 
     def fetch_all(self, query, params=None):

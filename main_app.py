@@ -1,10 +1,11 @@
 import tkinter as tk
-from tkinter import simpledialog, ttk
+from tkinter import ttk
 
-from finance_tab import FinanceTab
-from employees_tab import EmployeesTab
-from statistics_tab import StatisticsTab
 from database import Database
+from employees_tab import EmployeesTab
+from finance_tab import FinanceTab
+from statistics_tab import StatisticsTab
+
 
 class MainApp(tk.Tk):
     def __init__(self):
@@ -16,6 +17,7 @@ class MainApp(tk.Tk):
         self.create_widgets()
 
     def create_widgets(self):
+        #Connect BD and Faker
         self.database = Database()
         self.database.populate_fake_data()
         # Создание вкладок
@@ -29,9 +31,9 @@ class MainApp(tk.Tk):
 
         self.tabs.pack(expand=1, fill="both")
 
-
     def run(self):
         self.mainloop()
+
 
 if __name__ == "__main__":
     app = MainApp()

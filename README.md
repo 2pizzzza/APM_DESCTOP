@@ -27,5 +27,8 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/enterprise-management-system.git
-   cd enterprise-management-system
+   https://github.com/2pizzzza/APM_DESKTOP.git
+
+2. Install packages 
+   ```bash
+   pip install -r requirements.txt

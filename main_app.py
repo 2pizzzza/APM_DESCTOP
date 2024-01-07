@@ -15,6 +15,7 @@ class MainApp(tk.Tk):
         self.geometry("1000x500")
 
         self.create_widgets()
+        self.config(background="black")
 
     def create_widgets(self):
         #Connect BD and Faker

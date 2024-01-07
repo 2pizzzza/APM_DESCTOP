@@ -10,18 +10,15 @@ class EmployeesTab(tk.Frame):
 
     def create_widgets(self):
         self.database = Database()
-        # Frame for search
         frame_search = ttk.Frame(self)
         frame_search.grid(row=0, column=0, columnspan=5, pady=10)
 
-        # Search by name label and entry
         lbl_search_name = ttk.Label(frame_search, text="Поиск по имени:")
         lbl_search_name.grid(row=0, column=0, padx=5, pady=5)
 
         self.entry_search_name = ttk.Entry(frame_search)
         self.entry_search_name.grid(row=0, column=1, padx=5, pady=5)
 
-        # Search by position label and combobox
         lbl_search_position = ttk.Label(frame_search, text="Поиск по должности:")
         lbl_search_position.grid(row=0, column=2, padx=5, pady=5)
 
@@ -31,11 +28,9 @@ class EmployeesTab(tk.Frame):
         dropdown_search_position = ttk.Combobox(frame_search, textvariable=self.position_var, values=positions)
         dropdown_search_position.grid(row=0, column=3, padx=5, pady=5)
 
-        # Search button
         btn_search = ttk.Button(frame_search, text="Поиск", command=self.search_employees)
         btn_search.grid(row=0, column=4, padx=5, pady=5)
 
-        # Frame for employees
         frame_employees = ttk.Frame(self)
         frame_employees.grid(row=1, column=0, columnspan=5, pady=10)
 

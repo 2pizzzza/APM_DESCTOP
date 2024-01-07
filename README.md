@@ -27,7 +27,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   https://github.com/2pizzzza/APM_DESKTOP.git
+   git clone https://github.com/2pizzzza/APM_DESKTOP.git
 
 2. Install packages 
    ```bash

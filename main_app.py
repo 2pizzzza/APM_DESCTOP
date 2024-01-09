@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+
 from PIL import Image, ImageTk
 
 from APM.projects_tab import ProjectsTab
@@ -8,6 +8,7 @@ from database import Database
 from employees_tab import EmployeesTab
 from finance_tab import FinanceTab
 from statistics_tab import StatisticsTab
+
 
 class MainApp(tk.Tk):
     def __init__(self):
@@ -24,10 +25,10 @@ class MainApp(tk.Tk):
         self.database = Database()
         self.database.populate_fake_data()
         # Создание вкладок
-        self.tabs = ttk.Notebook(self)
+        # self.tabs = ttk.Notebook(self)
 
         # Load images and create PhotoImage objects
-        icon_employees_1 = Image.open("media/554744.png").resize((30,30), Image.ADAPTIVE)
+        icon_employees_1 = Image.open("media/554744.png").resize((30, 30), Image.ADAPTIVE)
         icon_statistics_2 = Image.open("media/statis.png").resize((30, 30), Image.AFFINE)
         icon_finance_3 = Image.open("media/finance.png").resize((30, 30), Image.AFFINE)
         icon_projects_4 = Image.open("media/project.png").resize((30, 30), Image.AFFINE)
@@ -58,6 +59,7 @@ class MainApp(tk.Tk):
 
     def run(self):
         self.mainloop()
+
 
 if __name__ == "__main__":
     app = MainApp()

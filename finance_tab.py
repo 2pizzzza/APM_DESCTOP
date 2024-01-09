@@ -8,8 +8,6 @@ class FinanceTab(tk.Frame):
         self.database = database
         self.create_widgets()
 
-
-
     def create_widgets(self):
         frame_finances = ttk.Frame(self)
         frame_finances.pack(pady=10)

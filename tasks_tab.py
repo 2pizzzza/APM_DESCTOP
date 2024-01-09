@@ -1,8 +1,8 @@
 # tasks_tab.py
 import tkinter as tk
-from tkinter import ttk
 from tkinter import simpledialog
-from database import Database
+from tkinter import ttk
+
 
 class TasksTab(tk.Frame):
     def __init__(self, master=None, database=None):
@@ -114,15 +114,16 @@ class TasksTab(tk.Frame):
             responsible_id = self.database.fetch_one("SELECT id FROM employees WHERE name=?", (responsible_name,))
 
             if responsible_id:
-                self.database.execute_query("INSERT INTO tasks (name, project_id, responsible_employee_id) VALUES (?, ?, ?)",
-                                            (name, project_info[0], responsible_id[0]))
+                self.database.execute_query(
+                    "INSERT INTO tasks (name, project_id, responsible_employee_id) VALUES (?, ?, ?)",
+                    (name, project_info[0], responsible_id[0]))
                 self.refresh_tasks()
                 add_task_window.destroy()
             else:
                 simpledialog.messagebox.showerror("Ошибка", "Выберите существующего ответственного сотрудника")
         else:
             simpledialog.messagebox.showerror("Ошибка", "Выберите существующий проект")
-    
+
     def edit_task(self):
         selected_item = self.tree_tasks.selection()
         if selected_item:
@@ -147,13 +148,14 @@ class TasksTab(tk.Frame):
             employees = self.database.fetch_all("SELECT * FROM employees")
             employee_names = [employee[1] for employee in employees]
             responsible_var = tk.StringVar(edit_task_window)
-            responsible_var.set(self.database.fetch_one("SELECT name FROM employees WHERE id=?", (task_responsible_id,))[0])
+            responsible_var.set(
+                self.database.fetch_one("SELECT name FROM employees WHERE id=?", (task_responsible_id,))[0])
             dropdown_responsible = ttk.Combobox(edit_task_window, textvariable=responsible_var, values=employee_names)
             dropdown_responsible.grid(row=1, column=1, padx=10, pady=10)
 
             btn_save = ttk.Button(edit_task_window, text="Сохранить",
                                   command=lambda: self.update_task(task_id, entry_name.get(), responsible_var.get(),
-                                                                     edit_task_window))
+                                                                   edit_task_window))
             btn_save.grid(row=2, column=0, padx=10, pady=10)
 
             btn_delete = ttk.Button(edit_task_window, text="Удалить",

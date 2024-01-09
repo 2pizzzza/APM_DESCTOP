@@ -1,8 +1,8 @@
 # projects_tab.py
 import tkinter as tk
-from tkinter import ttk
 from tkinter import simpledialog
-from database import Database
+from tkinter import ttk
+
 
 class ProjectsTab(tk.Frame):
     def __init__(self, master=None, database=None):
@@ -21,7 +21,7 @@ class ProjectsTab(tk.Frame):
 
         for col in columns:
             self.tree_projects.heading(col, text=col, anchor="center")
-            self.tree_projects.column(col, width=350, anchor="center")
+            self.tree_projects.column(col, width=450, anchor="center")
 
         self.tree_projects.pack(pady=10)
 
@@ -33,7 +33,6 @@ class ProjectsTab(tk.Frame):
         self.tree_projects.bind("<Double-1>", lambda event: self.edit_project())
         self.refresh_projects()
 
-
     def refresh_projects(self):
         for row in self.tree_projects.get_children():
             self.tree_projects.delete(row)
@@ -43,7 +42,6 @@ class ProjectsTab(tk.Frame):
 
         for project in projects:
             self.tree_projects.insert("", "end", values=project)
-
 
     def add_project(self):
         add_project_window = tk.Toplevel(self)

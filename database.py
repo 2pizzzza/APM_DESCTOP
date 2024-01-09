@@ -1,4 +1,5 @@
 import sqlite3
+
 from faker import Faker
 
 
@@ -6,7 +7,7 @@ class Database:
     def __init__(self, db_name="enterprise.db"):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
-        self.create_table()  # Вызов метода create_table при создании объекта
+        self.create_table()
 
     def create_table(self):
         with self.conn:
@@ -45,7 +46,8 @@ class Database:
             budget = fake.random_int(1000, 10000)
             income = fake.random_int(500, 5000)
             expense = fake.random_int(100, 2000)
-            self.cursor.execute("INSERT INTO finances (budget, income, expense) VALUES (?, ?, ?)", (budget, income, expense))
+            self.cursor.execute("INSERT INTO finances (budget, income, expense) VALUES (?, ?, ?)",
+                                (budget, income, expense))
 
         self.conn.commit()
 

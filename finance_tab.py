@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog
-from database import Database
+
 
 class FinanceTab(tk.Frame):
     def __init__(self, master=None, database=None):
         super().__init__(master)
         self.database = database
         self.create_widgets()
+
+
 
     def create_widgets(self):
         frame_finances = ttk.Frame(self)
@@ -17,8 +19,8 @@ class FinanceTab(tk.Frame):
         self.tree_finances = ttk.Treeview(frame_finances, columns=columns, show="headings")
 
         for col in columns:
-            self.tree_finances.heading(col, text=col)
-            self.tree_finances.column(col, width=100)
+            self.tree_finances.heading(col, text=col, anchor="center")
+            self.tree_finances.column(col, width=360, anchor="center")
 
         self.tree_finances.pack()
 
@@ -28,11 +30,7 @@ class FinanceTab(tk.Frame):
         btn_add_finance = ttk.Button(self, text="Добавить финансовую информацию", command=self.add_finance)
         btn_add_finance.pack(pady=10)
 
-        btn_edit_finance = ttk.Button(self, text="Редактировать финансовую информацию", command=self.edit_finance)
-        btn_edit_finance.pack(pady=10)
-
-        btn_delete_finance = ttk.Button(self, text="Удалить финансовую информацию", command=self.delete_finance)
-        btn_delete_finance.pack(pady=10)
+        self.tree_finances.bind("<Double-1>", lambda event: self.edit_finance())
 
         self.refresh_finances()
 
@@ -111,8 +109,8 @@ class FinanceTab(tk.Frame):
 
             btn_save = ttk.Button(edit_finance_window, text="Сохранить",
                                   command=lambda: self.update_finance(finance_id, entry_budget.get(),
-                                                                       entry_income.get(), entry_expense.get(),
-                                                                       edit_finance_window))
+                                                                      entry_income.get(), entry_expense.get(),
+                                                                      edit_finance_window))
             btn_save.grid(row=3, column=0, padx=10, pady=10)
 
             btn_delete = ttk.Button(edit_finance_window, text="Удалить",
@@ -126,7 +124,8 @@ class FinanceTab(tk.Frame):
         edit_finance_window.destroy()
 
     def delete_finance(self, finance_id, edit_finance_window):
-        result = simpledialog.askstring("Подтверждение", "Вы уверены, что хотите удалить финансовую информацию? (да/нет)")
+        result = simpledialog.askstring("Подтверждение",
+                                        "Вы уверены, что хотите удалить финансовую информацию? (да/нет)")
 
         if result.lower() == "да":
             self.database.execute_query("DELETE FROM finances WHERE id=?", (finance_id,))

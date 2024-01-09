@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import simpledialog, ttk
+
 from database import Database
+
 
 class EmployeesTab(tk.Frame):
     def __init__(self, master=None):
@@ -31,15 +33,21 @@ class EmployeesTab(tk.Frame):
         btn_search = ttk.Button(frame_search, text="Поиск", command=self.search_employees)
         btn_search.grid(row=0, column=4, padx=5, pady=5)
 
+        style = ttk.Style(self)
+        style.configure("Treeview", rowheight=30, font=('Helvetica', 10))
+
         frame_employees = ttk.Frame(self)
         frame_employees.grid(row=1, column=0, columnspan=5, pady=10)
+
+        columns = ("ID", "Имя", "Должность")
+        self.tree_employees = ttk.Treeview(frame_employees, columns=columns, show="headings", style="Treeview")
 
         columns = ("ID", "Имя", "Должность")
         self.tree_employees = ttk.Treeview(frame_employees, columns=columns, show="headings")
 
         for col in columns:
-            self.tree_employees.heading(col, text=col)
-            self.tree_employees.column(col, width=100)
+            self.tree_employees.heading(col, text=col, anchor="center")
+            self.tree_employees.column(col, width=490, anchor="center")
 
         self.tree_employees.grid(row=0, column=0, padx=10, pady=10)
 
@@ -57,6 +65,7 @@ class EmployeesTab(tk.Frame):
         self.lbl_info = ttk.Label(frame_info, text="Общая информация о предприятии")
         self.lbl_info.grid(row=0, column=0, pady=10)
 
+        self.refresh_employees()
         # Double-click binding for editing
         self.tree_employees.bind("<Double-1>", lambda event: self.edit_employee())
 

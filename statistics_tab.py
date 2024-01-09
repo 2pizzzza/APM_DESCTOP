@@ -4,39 +4,41 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from database import Database
-
 
 class StatisticsTab(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, database=None):
         super().__init__(master)
-        self.database = Database()
+        self.database = database
         self.create_widgets()
+        self.schedule_update()
 
     def create_widgets(self):
-        self.database = Database()
         frame_statistics = ttk.Frame(self)
         frame_statistics.pack(pady=10)
 
-        btn_show_statistics = ttk.Button(frame_statistics, text="Показать статистику", command=self.show_statistics)
-        btn_show_statistics.pack(pady=10)
+        # График с сотрудниками
+        self.fig_employees, self.ax_employees = plt.subplots()
+        self.canvas_employees = FigureCanvasTkAgg(self.fig_employees, master=self)
+        self.canvas_employees_widget = self.canvas_employees.get_tk_widget()
+        self.canvas_employees_widget.pack(side=tk.LEFT, padx=10)
 
-    def show_statistics(self):
-        total_employees = self.database.fetch_all("SELECT COUNT(*) FROM employees")[0][0]
+        # График с финансами
+        self.fig_finances, self.ax_finances = plt.subplots()
+        self.canvas_finances = FigureCanvasTkAgg(self.fig_finances, master=self)
+        self.canvas_finances_widget = self.canvas_finances.get_tk_widget()
+        self.canvas_finances_widget.pack(side=tk.RIGHT, padx=10)
 
-        position_stats = self.database.fetch_all("SELECT position, COUNT(position) FROM employees GROUP BY position")
+    def schedule_update(self):
+        self.update_statistics()
+        self.after(10000, self.schedule_update)  # Обновление каждые 10 секунд (в миллисекундах)
 
-        self.show_statistics_window(total_employees, position_stats)
+    def update_statistics(self):
+        self.show_employees_statistics()
+        self.show_finances_statistics()
 
-    def show_statistics_window(self, total_employees, position_stats):
-        statistics_window = tk.Toplevel(self)
-        statistics_window.title("Статистика")
-
-        lbl_total_employees = ttk.Label(statistics_window, text=f"Общее количество сотрудников: {total_employees}")
-        lbl_total_employees.pack(pady=10)
-
-        lbl_position_stats = ttk.Label(statistics_window, text="Количество сотрудников по должностям:")
-        lbl_position_stats.pack(pady=5)
+    def show_employees_statistics(self):
+        query = "SELECT position, COUNT(position) FROM employees GROUP BY position"
+        position_stats = self.database.fetch_all(query)
 
         positions = []
         counts = []
@@ -45,10 +47,27 @@ class StatisticsTab(tk.Frame):
             positions.append(position)
             counts.append(count)
 
-        fig, ax = plt.subplots()
-        ax.pie(counts, labels=positions, autopct='%1.1f%%', startangle=90)
-        ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        self.ax_employees.clear()
+        self.ax_employees.pie(counts, labels=positions, autopct='%1.1f%%', startangle=90)
+        self.ax_employees.set_title("Статистика по сотрудникам")
 
-        canvas = FigureCanvasTkAgg(fig, master=statistics_window)
-        canvas_widget = canvas.get_tk_widget()
-        canvas_widget.pack()
+        self.canvas_employees.draw()
+
+    def show_finances_statistics(self):
+        query = "SELECT budget, income, expense FROM finances"
+        finances = self.database.fetch_all(query)
+
+        budgets = [finance[0] for finance in finances]
+        incomes = [finance[1] for finance in finances]
+        expenses = [finance[2] for finance in finances]
+
+        self.ax_finances.clear()
+        self.ax_finances.plot(budgets, label='Бюджет')
+        self.ax_finances.plot(incomes, label='Доход')
+        self.ax_finances.plot(expenses, label='Расход')
+        self.ax_finances.set_title("Статистика по финансам")
+        self.ax_finances.set_xlabel("Запись в базе данных")
+        self.ax_finances.set_ylabel("Сумма")
+        self.ax_finances.legend()
+
+        self.canvas_finances.draw()

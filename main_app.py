@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 from PIL import Image, ImageTk
 
@@ -23,9 +24,9 @@ class MainApp(tk.Tk):
     def create_widgets(self):
         # Connect BD and Faker
         self.database = Database()
-        self.database.populate_fake_data()
+        # self.database.populate_fake_data()
         # Создание вкладок
-        # self.tabs = ttk.Notebook(self)
+        self.tabs = ttk.Notebook(self)
 
         # Load images and create PhotoImage objects
         icon_employees_1 = Image.open("media/554744.png").resize((30, 30), Image.ADAPTIVE)

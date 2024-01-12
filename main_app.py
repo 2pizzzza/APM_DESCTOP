@@ -3,8 +3,8 @@ from tkinter import ttk
 
 from PIL import Image, ImageTk
 
-from APM.projects_tab import ProjectsTab
-from APM.tasks_tab import TasksTab
+from projects_tab import ProjectsTab
+from tasks_tab import TasksTab
 from database import Database
 from employees_tab import EmployeesTab
 from finance_tab import FinanceTab
